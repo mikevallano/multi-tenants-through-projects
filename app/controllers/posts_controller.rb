@@ -1,10 +1,11 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_project
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = @current_project.posts
   end
 
   # GET /posts/1
@@ -25,7 +26,6 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-
     respond_to do |format|
       if @post.save
         format.html { redirect_to project_posts_path, notice: 'Post was successfully created.' }
@@ -67,8 +67,12 @@ class PostsController < ApplicationController
       @post = Post.find(params[:id])
     end
 
+    def set_current_project
+      @current_project = Project.find(params[:project_id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:name, :description)
+      params.require(:post).permit(:name, :description, :project_id)
     end
 end
