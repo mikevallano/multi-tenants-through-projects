@@ -21,7 +21,7 @@ RSpec.describe ApplicationController, :type => :controller do
 
       expect(response).to be_success
       expect(response).to have_http_status(200)
-      binding.pry
+      # binding.pry
       expect(assigns(:account).subdomain).to eq(account_name)
     end
 
