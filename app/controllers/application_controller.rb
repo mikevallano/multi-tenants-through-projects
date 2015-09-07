@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :current_account
   around_filter :scope_current_account
 
-   def current_account
+  def current_account
     @account = Account.find_by(subdomain: request.subdomain)
   end
 
