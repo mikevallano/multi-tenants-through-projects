@@ -6,12 +6,13 @@ class ApplicationController < ActionController::Base
   before_action :current_account
   around_action :scope_current_account
   before_action :current_project
+  around_action :scope_current_project
 
   def current_account
     @account = Account.find_by(subdomain: request.subdomain)
   end
 
-  def current_project
+  def current_project #TODO clean this up and test it
     if params[:project_id]
       @project_id = params[:project_id]
     elsif params[:id]
@@ -35,4 +36,10 @@ class ApplicationController < ActionController::Base
       Account.current_id = nil
   end
 
+  def scope_current_project
+    Project.current_id = current_project.id if current_project.present?
+      yield
+    ensure
+      Project.current_id = nil
+  end
 end

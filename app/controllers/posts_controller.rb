@@ -6,15 +6,15 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = @current_project.posts
+    @posts = Post.by_current_project
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
-    # if request.path != project_posts_path(@post)
-    #   return redirect_to project_posts_path(@post), :status => :moved_permanently
-    # end
+    if request.path != project_post_path(@current_project, @post)
+      return redirect_to project_post_path(@current_project, @post), :status => :moved_permanently
+    end
   end
 
   # GET /posts/new
@@ -68,7 +68,7 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find(params[:id])
+      @post = Post.by_current_project.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -77,8 +77,9 @@ class PostsController < ApplicationController
     end
 
     def scoped_to_project?
+      @permitted_account = current_user.projects.first.account
       if @post.project_id != @current_project.id
-        redirect_to project_posts_path(@current_project), notice: 'That post is not part of this project.'
+        redirect_to account_path(@permitted_account), notice: 'That post is not part of this project.'
       end
     end
 end
