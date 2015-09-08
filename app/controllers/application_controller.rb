@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
     @current_project = Project.find(params[:project_id]) if params[:project_id].present?
   end
 
-  def belongs_to_project?
-    current_user.projects.include?(@current_project) if @current_project.present?
+  def access_to_project?
+    current_user.projects.include?(@current_project) if @current_project.present? && current_user.present?
   end
 
   def require_account!
@@ -24,9 +24,9 @@ class ApplicationController < ActionController::Base
 
   def scope_current_account
     Account.current_id = current_account.id if current_account.present?
-    yield
-  ensure
-    Account.current_id = nil
+      yield
+    ensure
+      Account.current_id = nil
   end
 
 end
