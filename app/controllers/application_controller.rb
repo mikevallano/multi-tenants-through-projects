@@ -4,17 +4,19 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :current_account
-  around_filter :scope_current_account
+  around_action :scope_current_account
+  before_action :current_project
 
   def current_account
     @account = Account.find_by(subdomain: request.subdomain)
   end
 
   def current_project
-    @current_project = Project.find(params[:project_id]) if params[:project_id].present?
+    @project_id = params[:project_id]
+    @current_project = Project.find(@project_id) if @project_id.present?
   end
 
-  def access_to_project?
+  def access_to_project? #TODO: this still needs to actually be enforced by pundit
     current_user.projects.include?(@current_project) if @current_project.present? && current_user.present?
   end
 
