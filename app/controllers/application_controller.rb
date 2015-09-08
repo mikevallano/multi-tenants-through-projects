@@ -12,8 +12,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    @project_id = params[:project_id]
-    @current_project = Project.find(@project_id) if @project_id.present?
+    if params[:project_id]
+      @project_id = params[:project_id]
+    elsif params[:id]
+      @project_id = params[:id]
+    end
+    @current_project = Project.friendly.find(@project_id) if @project_id.present?
   end
 
   def access_to_project? #TODO: this still needs to actually be enforced by pundit

@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Project:</strong>
+  <%= @project.name %><br>
   <strong>Account:</strong>
-  <%= @project.account %>
+  <%= @project.account.name %>
 </p>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |

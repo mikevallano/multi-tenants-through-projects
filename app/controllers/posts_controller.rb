@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :scoped_to_project?, only: [:show, :edit, :update, :destroy]
   before_action :access_to_project?
 
   # GET /posts
@@ -11,6 +12,9 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    # if request.path != project_posts_path(@post)
+    #   return redirect_to project_posts_path(@post), :status => :moved_permanently
+    # end
   end
 
   # GET /posts/new
@@ -70,5 +74,11 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:name, :description, :project_id)
+    end
+
+    def scoped_to_project?
+      if @post.project_id != @current_project.id
+        redirect_to project_posts_path(@current_project), notice: 'That post is not part of this project.'
+      end
     end
 end

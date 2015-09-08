@@ -8,5 +8,8 @@
 <p>
   <strong>Description:</strong>
   <%= @post.description %>
+
+  <p><%= link_to 'Edit', edit_project_post_path(@current_project, @post) %></p>
+  <p><%= link_to 'Destroy', project_post_path(@current_project, @post), method: :delete, data: { confirm: 'Are you sure?' } %></p>
 </p>
 
