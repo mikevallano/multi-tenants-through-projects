@@ -2,6 +2,7 @@ class Account < ActiveRecord::Base
 
   has_many :projects
   has_many :users, through: :projects
+  has_many :posts, through: :projects
 
 
   def self.current_id=(id)

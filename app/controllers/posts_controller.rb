@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.by_current_project
+    @posts = Post.all
   end
 
   # GET /posts/1
@@ -68,7 +68,7 @@ class PostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.by_current_project.friendly.find(params[:id])
+      @post = Post.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -77,7 +77,7 @@ class PostsController < ApplicationController
     end
 
     def scoped_to_project?
-      @permitted_account = current_user.projects.first.account
+      @permitted_account = current_user.account
       if @post.project_id != @current_project.id
         redirect_to account_path(@permitted_account), notice: 'That post is not part of this project.'
       end

@@ -12,8 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :account_id %><br>
-    <%= f.text_field :account_id %>
+    <input type="hidden" name="project[account_id]" id="account_id" value="<%= @current_account.id %>" />
   </div>
   <div class="field">
     <%= f.label :name %><br>
