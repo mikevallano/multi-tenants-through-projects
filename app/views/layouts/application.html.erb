@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <%= link_to "Posts |", project_posts_path(:subdomain => @account.subdomain, :project_id => @current_project.slug) if @account.present? && @current_project.present? %> <%= link_to "Sign out |", destroy_user_session_path, :method => "delete" if current_user.present? %> <%= link_to "| Sign In", "/users/sign_in" unless current_user.present? %>
+  <%= link_to "Home |", subdomain_root_url(:subdomain => @account.subdomain) if current_user.present? %> <%= link_to "Posts |", project_posts_path(:subdomain => @account.subdomain, :project_id => @current_project.slug) if @account.present? && @current_project.present? %> <%= link_to "Sign out |", destroy_user_session_path, :method => "delete" if current_user.present? %> <%= link_to "| Sign In", "/users/sign_in" unless current_user.present? %>
 <%= link_to "| Sign Up", '/users/sign_up' unless current_user.present? %> <%= "| Signed in as: #{current_user.email}" if current_user.present? %>
 
   <p class="notice"><%= notice %></p>
