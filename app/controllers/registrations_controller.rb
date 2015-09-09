@@ -9,7 +9,8 @@ class RegistrationsController < Devise::RegistrationsController
     yield resource if block_given?
     @token = params[:invite_token] #<-- pulls the value from the url query string
     if @token.present?
-     resource.email =  Invite.find_by_token(@token).email #for use in form
+      @invite = Invite.find_by_token(@token)
+      resource.email = @invite.email #for use in form
     end
     respond_with self.resource
   end
@@ -19,9 +20,10 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     @token = params[:invite_token]
     if @token.present?
-     resource.account_id =  Invite.find_by_token(@token).account_id #find and assign the account based on token
-     resource.email =  Invite.find_by_token(@token).email
-     resource.role_ids = Invite.find_by_token(@token).role_ids
+      @invite = Invite.find_by_token(@token)
+      resource.project_ids = @invite.project_ids
+      resource.email = @invite.email
+      resource.role_ids = @invite.role_ids
     end
 
     resource.save

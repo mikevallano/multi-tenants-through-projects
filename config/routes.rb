@@ -13,6 +13,7 @@ end
 
 
 Rails.application.routes.draw do
+  resources :invites
   devise_for :users, :controllers => {:registrations => "registrations"}
   resources :roles
   resources :accounts
