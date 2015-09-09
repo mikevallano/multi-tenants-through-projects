@@ -9,13 +9,15 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :roles, through: :memberships
   has_many :projects, through: :memberships
-  has_many :accounts, through: :projects
 
-  def my_projects
-    self.projects.unscoped
-  end
+  accepts_nested_attributes_for :account
 
-  def accounts
-    self.projects.unscoped.all.map{ |project| project.account }.uniq
-  end
+  after_initialize :set_account
+
+  private
+
+    def set_account
+      build_account unless account.present?
+    end
+
 end

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :current_account
+  before_action :configure_permitted_parameters, if: :devise_controller?
   around_action :scope_current_account
   before_action :current_project
   around_action :scope_current_project
@@ -19,6 +20,11 @@ class ApplicationController < ActionController::Base
       @project_id = params[:id]
     end
     @current_project = Project.friendly.find(@project_id) if @project_id.present?
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:email, :password,
+      :password_confirmation, account_attributes: [:subdomain, :owner_id])}
   end
 
   def access_to_project? #TODO: this still needs to actually be enforced by pundit
