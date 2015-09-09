@@ -23,8 +23,9 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:email, :password,
-      :password_confirmation, account_attributes: [:subdomain, :owner_id])}
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:email, :password, :password_confirmation,
+      account_attributes: [:subdomain])
+    }
   end
 
   def access_to_project? #TODO: this still needs to actually be enforced by pundit
