@@ -19,8 +19,21 @@ class User < ActiveRecord::Base
   after_create :assign_owner_id
   after_create :set_invite_receiver_id
 
+   #methods for pundit calls
+  def admin?
+    self.roles.map(&:name).include?("admin")
+  end
+
   def account_owner?
     self.roles.map(&:name).include?("account owner") || self.account.owner_id == self.id
+  end
+
+  def manager?
+    self.roles.map(&:name).include?("manager")
+  end
+
+  def counselor?
+    self.roles.map(&:name).include?("counselor")
   end
 
   private

@@ -16,9 +16,10 @@ class ApplicationController < ActionController::Base
   def current_project #TODO clean this up and test it
     if params[:project_id]
       @project_id = params[:project_id]
-    elsif params[:id]
-      @project_id = params[:id]
+    # elsif params[:id]
+    #   @project_id = params[:id]
     end
+    # binding.pry
     @current_project = Project.friendly.find(@project_id) if @project_id.present?
   end
 

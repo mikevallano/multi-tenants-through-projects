@@ -21,6 +21,11 @@ Rails.application.routes.draw do
   constraints(SubdomainPresent) do
     root 'pages#my_home', as: :subdomain_root
     get 'welcome', to: 'pages#welcome', as: :welcome
+
+    namespace :admin do
+      resources :users
+    end
+
     resources :projects do
       resources :posts
     end

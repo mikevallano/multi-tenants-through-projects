@@ -2,17 +2,17 @@
 
 <p>
   <strong>Project:</strong>
-  <%= @membership.project_id %>
+  <%= @membership.project.name if @membership.project.present? %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @membership.user_id %>
+  <%= @membership.user.email if @membership.user.present? %>
 </p>
 
 <p>
   <strong>Role:</strong>
-  <%= @membership.role_id %>
+  <%= @membership.role.name if @membership.role.present? %>
 </p>
 
 <%= link_to 'Edit', edit_membership_path(@membership) %> |

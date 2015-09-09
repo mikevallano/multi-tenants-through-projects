@@ -21,9 +21,10 @@ class RegistrationsController < Devise::RegistrationsController
     @token = params[:invite_token]
     if @token.present?
       @invite = Invite.find_by_token(@token)
-      resource.project_ids = @invite.project_ids
       resource.email = @invite.email
-      resource.role_ids = @invite.role_ids
+      resource.memberships << Membership.new(project_id: @invite.project_ids, role_id: @invite.role_ids)
+      # resource.project_ids = @invite.project_ids
+      # resource.role_ids = @invite.role_ids
     end
 
     resource.save

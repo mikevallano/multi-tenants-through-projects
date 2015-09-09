@@ -10,18 +10,17 @@
       </ul>
     </div>
   <% end %>
+  <div class="field">
+    Which user:<br><%= f.collection_select(:user_id, User.all, :id, :email, { :label => "User" } ) %>
+  </div>
+
 
   <div class="field">
-    <%= f.label :project_id %><br>
-    <%= f.number_field :project_id %>
+    Add user to a project:<br><%= f.collection_select(:project_id, Project.all, :id, :name, { :label => "Project" } ) %>
   </div>
+
   <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :role_id %><br>
-    <%= f.number_field :role_id %>
+    Assign a new role:<br><%= f.collection_select(:role_id, Role.all, :id, :name, { :label => "Role" } ) %>
   </div>
   <div class="actions">
     <%= f.submit %>

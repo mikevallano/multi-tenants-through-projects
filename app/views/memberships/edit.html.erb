@@ -4,3 +4,4 @@
 
 <%= link_to 'Show', @membership %> |
 <%= link_to 'Back', memberships_path %>
+<%= link_to 'Delete this membership', @membership, method: :delete, data: { confirm: 'Are you sure?' } %>

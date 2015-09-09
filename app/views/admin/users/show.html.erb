@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<% if @user.memberships.count > 0 %>
+
+  <h2>Here are the users's projects and roles</h2>
+    <br>
+    <% @user.memberships.each do |membership| %>
+      <strong>Project:</strong> <%= membership.project.name if membership.project.present? %><br>
+      <strong>Role within <%= membership.project.name if membership.project.present? %></strong>: <%= membership.role.name if membership.role.present? %>
+      <br>
+      <%= link_to "Edit this user", edit_membership_path(membership) %><br><br>
+    <% end %>
+
+  <p>
+  <%= link_to 'Edit', edit_admin_user_path(@user) %>
+
+<% else %>
+
+  <h2>This user has no memberships</h2>
+
+  <%= link_to "Delete this user", admin_user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } %><br>
+  <%= link_to "Create a new membership", new_membership_path %>
+
+<% end %>
