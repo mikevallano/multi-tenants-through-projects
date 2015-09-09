@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :scoped_to_project?, only: [:show, :edit, :update, :destroy]
   before_action :access_to_project?
+  before_action :authenticate_user!
 
   # GET /posts
   # GET /posts.json

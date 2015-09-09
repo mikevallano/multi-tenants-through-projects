@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   resources :accounts
 
   constraints(SubdomainPresent) do
-    root 'posts#index', as: :subdomain_root
+    root 'pages#my_home', as: :subdomain_root
+    get 'welcome', to: 'pages#welcome', as: :welcome
     resources :projects do
       resources :posts
     end

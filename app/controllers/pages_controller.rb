@@ -4,4 +4,11 @@ class PagesController < ApplicationController
 
   def about
   end
+
+  def welcome
+    @project = Project.new
+  end
+
+  def my_home
+  end
 end
