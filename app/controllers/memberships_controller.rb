@@ -4,7 +4,7 @@ class MembershipsController < ApplicationController
   # GET /memberships
   # GET /memberships.json
   def index
-    @memberships = Membership.all
+    @memberships = @account.memberships.all
   end
 
   # GET /memberships/1
@@ -14,7 +14,7 @@ class MembershipsController < ApplicationController
 
   # GET /memberships/new
   def new
-    @membership = Membership.new
+    @membership = @account.memberships.new
   end
 
   # GET /memberships/1/edit
@@ -24,7 +24,7 @@ class MembershipsController < ApplicationController
   # POST /memberships
   # POST /memberships.json
   def create
-    @membership = Membership.new(membership_params)
+    @membership = @account.memberships.new(membership_params)
 
     respond_to do |format|
       if @membership.save
@@ -64,11 +64,11 @@ class MembershipsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_membership
-      @membership = Membership.find(params[:id])
+      @membership = @account.memberships.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def membership_params
-      params.require(:membership).permit(:project_id, :user_id, :role_id)
+      params.require(:membership).permit(:project_id, :user_id, :role_id, :account_id)
     end
 end

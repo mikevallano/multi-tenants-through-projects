@@ -20,8 +20,9 @@
   </div>
 
   <div class="field">
-    Assign a new role:<br><%= f.collection_select(:role_id, Role.all, :id, :name, { :label => "Role" } ) %>
+    Assign a role:<br><%= f.collection_select(:role_id, Role.all, :id, :name, { :label => "Role" } ) %>
   </div>
+  <%= f.hidden_field :account_id, :value => @account.id %>
   <div class="actions">
     <%= f.submit %>
   </div>

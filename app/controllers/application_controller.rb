@@ -14,14 +14,9 @@ class ApplicationController < ActionController::Base
     @account = Account.find_by(subdomain: request.subdomain)
   end
 
-  def current_project #TODO clean this up and test it
-    # if params[:project_id]
-      @project_name = params[:project_id]
-    # elsif params[:id]
-    #   @project_id = params[:id]
-    # end
+  def current_project
+    @project_name = params[:project_id]
     @current_project = Project.friendly.find(@project_name) if @project_name.present?
-      # puts "current project is: #{@current_project.name}" if @current_project.present?
   end
 
   def configure_permitted_parameters
@@ -33,7 +28,7 @@ class ApplicationController < ActionController::Base
   def can_access_project? #TODO: is this the best way to enforce?
     @permitted_account = current_user.account #identify a place to redirect user to
     unless current_user.projects.include?(@current_project) || current_user.account_owner?
-      redirect_to account_path(@permitted_account), notice: 'You are not part of that project.'
+      redirect_to root_url(:subdomain => @permitted_account.subdomain), notice: 'You are not part of that project.'
     end
   end
 

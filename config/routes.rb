@@ -15,8 +15,6 @@ end
 Rails.application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations"}
-  resources :roles
-  resources :accounts
 
   constraints(SubdomainPresent) do
     root 'pages#my_home', as: :subdomain_root
@@ -33,12 +31,13 @@ Rails.application.routes.draw do
 
     resources :memberships
     resources :invites
-
+    resources :roles
   end
 
   constraints(SubdomainBlank) do
     root 'pages#home'
     get 'pages/about'
+    resources :accounts
   end
 
 end
