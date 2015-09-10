@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   has_many :memberships
   has_many :users, through: :memberships
   has_many :posts
+  has_many :chats
   # has_many :roles, through: :memberships
 
   def self.current_id=(id)

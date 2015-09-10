@@ -1,6 +1,10 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
+  #TODO: look into these skips
+  skip_before_action :current_project
+  skip_around_action :scope_current_project
+
   # GET /accounts
   # GET /accounts.json
   def index

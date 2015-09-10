@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @chat.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @chat.description %>
+</p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @chat.slug %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @chat.project %>
+</p>
+
+<%= link_to 'Edit', edit_project_chat_path(@current_project, @chat) %> |
+<p><%= link_to 'Destroy', project_chat_path(@current_project, @chat), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+
+<%= link_to 'Back', project_chats_path %>

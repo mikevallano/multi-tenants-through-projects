@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+
   protect_from_forgery with: :exception
+
+  include Pundit
 
   before_action :current_account
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -14,13 +15,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project #TODO clean this up and test it
-    if params[:project_id]
-      @project_id = params[:project_id]
+    # if params[:project_id]
+      @project_name = params[:project_id]
     # elsif params[:id]
     #   @project_id = params[:id]
-    end
-    # binding.pry
-    @current_project = Project.friendly.find(@project_id) if @project_id.present?
+    # end
+    @current_project = Project.friendly.find(@project_name) if @project_name.present?
+      # puts "current project is: #{@current_project.name}" if @current_project.present?
   end
 
   def configure_permitted_parameters
@@ -29,8 +30,11 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  def access_to_project? #TODO: this still needs to actually be enforced by pundit
-    current_user.projects.include?(@current_project) if @current_project.present? && current_user.present?
+  def can_access_project? #TODO: is this the best way to enforce?
+    @permitted_account = current_user.account #identify a place to redirect user to
+    unless current_user.projects.include?(@current_project) || current_user.account_owner?
+      redirect_to account_path(@permitted_account), notice: 'You are not part of that project.'
+    end
   end
 
   def require_account!
