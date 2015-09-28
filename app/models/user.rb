@@ -1,14 +1,22 @@
 class User < ActiveRecord::Base
 
-  default_scope { where(account_id: Account.current_id) }
+  # default_scope { where(account_id: Account.current_id) }
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :account
+  # belongs_to :account
+  has_one :account
+
+
   has_many :memberships
-  has_many :roles, through: :memberships
-  has_many :projects, through: :memberships
+  has_many :accessible_accounts, :through => :memberships, :source => 'associated_account'
+  # has_many :roles, through: :memberships
+  # has_many :projects, through: :memberships
+  has_many :participations
+  has_many :roles, through: :participations
+  has_many :accessible_projects, through: :participations, :source => 'associated_project'
+  has_many :projects
 
   has_many :received_invites, :class_name => "Invite", :foreign_key => 'receiver_id'
   has_many :sent_invites, :class_name => "Invite", :foreign_key => 'sender_id'

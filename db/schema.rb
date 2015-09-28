@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150910154154) do
+ActiveRecord::Schema.define(version: 20150928182508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20150910154154) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "owner_id"
+    t.integer  "user_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -63,15 +64,29 @@ ActiveRecord::Schema.define(version: 20150910154154) do
   add_index "invites", ["token"], name: "index_invites_on_token", using: :btree
 
   create_table "memberships", force: :cascade do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "associated_user_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "account_id"
+    t.integer  "user_id"
+    t.integer  "associated_account_id"
   end
 
   add_index "memberships", ["account_id"], name: "index_memberships_on_account_id", using: :btree
+
+  create_table "participations", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.integer  "associated_user_id"
+    t.integer  "associated_project_id"
+  end
+
+  add_index "participations", ["project_id"], name: "index_participations_on_project_id", using: :btree
+  add_index "participations", ["role_id"], name: "index_participations_on_role_id", using: :btree
+  add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "name"
@@ -122,5 +137,8 @@ ActiveRecord::Schema.define(version: 20150910154154) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "chats", "projects"
+  add_foreign_key "participations", "projects"
+  add_foreign_key "participations", "roles"
+  add_foreign_key "participations", "users"
   add_foreign_key "projects", "accounts"
 end
