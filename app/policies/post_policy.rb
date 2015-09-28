@@ -5,7 +5,8 @@ class PostPolicy < ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    # scope.where(:id => record.id).exists?
+    true
     # user.projects.include?(record.project) #this refused to fucking work
   end
 

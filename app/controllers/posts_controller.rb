@@ -16,7 +16,6 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-    authorize @post
     if request.path != project_post_path(@current_project, @post)
       return redirect_to project_post_path(@current_project, @post), :status => :moved_permanently
     end
@@ -36,7 +35,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-    # authorize @post
+    authorize @post
     respond_to do |format|
       if @post.save
         format.html { redirect_to project_posts_path, notice: 'Post was successfully created.' }
