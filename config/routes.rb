@@ -17,8 +17,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   constraints(SubdomainPresent) do
-    root 'pages#my_home', as: :subdomain_root
+    root 'pages#account_home', as: :subdomain_root
     get 'welcome', to: 'pages#welcome', as: :welcome
+    get 'dashboard', to: 'pages#dashboard', as: :dashboard
 
     namespace :admin do
       resources :users

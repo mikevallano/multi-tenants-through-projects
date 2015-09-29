@@ -1,0 +1,12 @@
+
+<% if current_user.present? %>
+  <%= link_to "My Home Page |", dashboard_url(:subdomain => current_user.account.subdomain)  %>
+  <%= link_to "Posts |", project_posts_path(:subdomain => @account.subdomain, :project_id => @current_project.slug) if @current_project.present? %>
+  <%= "| Signed in as: #{current_user.email}" %>
+  <%= link_to "| Manage Users", admin_users_path %>
+
+<% else %>
+  <%= link_to "| Sign In", "/users/sign_in" %>
+  <%= link_to "| Sign Up", '/users/sign_up' %>
+
+<% end %>

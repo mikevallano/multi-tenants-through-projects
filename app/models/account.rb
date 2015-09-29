@@ -1,5 +1,7 @@
 class Account < ActiveRecord::Base
 
+  validates_uniqueness_of :subdomain
+
   has_many :projects
   # has_many :users
   belongs_to :user

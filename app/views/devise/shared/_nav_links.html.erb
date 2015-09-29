@@ -1,0 +1,15 @@
+
+<% if current_user.present? %>
+  <%= link_to "Home |", subdomain_root_url(:subdomain => current_user.account.subdomain)  %>
+  <%= "| Signed in as: #{current_user.email}" %>
+  <% if current_user.admin? %>
+    <%= link_to "| Invite a New User to the project", new_invite_path if current_project.present? %>
+    <%= link_to "| Invite a New Admin Member", new_memberinvite_path %>
+    <%= link_to "| Manage Users", admin_users_path %>
+  <% end %>
+
+<% else %>
+  <%= link_to "| Sign In", "/users/sign_in" %>
+  <%= link_to "| Sign Up", '/users/sign_up' %>
+
+<% end %>

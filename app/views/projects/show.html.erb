@@ -1,12 +1,16 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Project:</strong>
-  <%= @project.name %><br>
+
+  <h1><%= @project.name %><br></h1>
   <strong>Account:</strong>
   <%= @project.account.subdomain %><br>
-<strong>Posts:</strong>
+<strong>This project's posts:</strong>
 <%= link_to "Posts", project_posts_path(@project) %></p>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
+
+
+<%= link_to 'Edit this project', edit_project_path(@project) %> |<br>
+
+<%= link_to "Invite a New User to this project", new_invite_path %><br>
 <%= link_to 'Back', projects_path %>

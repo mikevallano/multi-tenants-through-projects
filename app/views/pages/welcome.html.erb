@@ -3,27 +3,8 @@
 
   <h2>This is your main account:</h2>
 
-  <h2>My Accounts</h2>
 <p>Combine user.account and user.accessible_accounts. Invite a user to manage this account (member).</p>
 
 
 <h2>My projects</h2>
 <p>Combine user.projects and user.accessible_projects. Invite a user to this project (participant)</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>My Accounts</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% current_user.accessible_accounts.each do |account| %>
-        <tr>
-          <td><%= account.subdomain %></td>
-          <td><%= link_to 'Show', "http://#{account.subdomain}.lvh.me:3000/" %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>

@@ -13,11 +13,18 @@ class ApplicationController < ActionController::Base
   def current_account
     @account = Account.find_by(subdomain: request.subdomain)
   end
+  helper_method :current_account
 
   def current_project
-    @project_name = params[:project_id]
-    @current_project = Project.friendly.find(@project_name) if @project_name.present?
+    if params[:project_id].present?
+      @project_name = params[:project_id]
+      @current_project = Project.friendly.find(@project_name) if @project_name.present?
+    elsif params[:controller] == "projects"
+      @project_name = params[:id]
+      @current_project = Project.friendly.find(@project_name) if @project_name.present?
+    end
   end
+  helper_method :current_project
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:email, :password, :password_confirmation,

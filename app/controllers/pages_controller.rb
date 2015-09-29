@@ -12,4 +12,8 @@ class PagesController < ApplicationController
 
   def my_home
   end
+
+  def dashboard
+    @projects = Project.all
+  end
 end
