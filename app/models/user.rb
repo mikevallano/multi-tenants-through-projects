@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :participations
   has_many :roles, through: :participations
   has_many :accessible_projects, through: :participations, :source => 'associated_project'
-  has_many :projects
+  # has_many :projects
 
   has_many :received_invites, :class_name => "Invite", :foreign_key => 'receiver_id'
   has_many :sent_invites, :class_name => "Invite", :foreign_key => 'sender_id'
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   def account_owner?
-    self.roles.map(&:name).include?("account owner") || self.account.owner_id == self.id
+    self.roles.map(&:name).include?("account owner") #|| self.account.owner_id == self.id
   end
 
   def manager?
@@ -42,6 +42,19 @@ class User < ActiveRecord::Base
 
   def counselor?
     self.roles.map(&:name).include?("counselor")
+  end
+
+  def all_accounts
+    mah_accounts = []
+    mah_accounts << self.account
+    self.accessible_accounts.each do |account|
+      mah_accounts << account
+    end
+    mah_accounts
+  end
+
+  def all_projects
+    self.projects.merge(self.accessible_projects)
   end
 
   private
@@ -53,7 +66,7 @@ class User < ActiveRecord::Base
     def assign_owner_id
       unless account.owner_id.present?
         account.owner_id = self.id
-        self.role_ids = Role.find_by_name("account owner").id
+        # self.role_ids = Role.find_by_name("account owner").id
       end
     end
 

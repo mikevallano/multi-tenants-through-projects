@@ -6,11 +6,11 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     scope.where(:id => record.id).exists?
-    user.admin? || user.account_owner? || user.projects.include?(record) #need to test this out
+    user.admin? #|| user.account_owner? || user.projects.include?(record) #need to test this out
   end
 
   def create?
-    user.admin? || user.account_owner?
+    user.admin? #|| user.account_owner?
   end
 
   def new?
@@ -18,7 +18,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || user.account_owner?
+    user.admin? #|| user.account_owner?
   end
 
   def edit?
@@ -26,7 +26,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.admin? || user.account_owner?
+    user.admin? #|| user.account_owner?
   end
 
 end

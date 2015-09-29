@@ -25,9 +25,9 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  def can_access_project? #TODO: is this the best way to enforce?
+  def can_access_project? #TODO: is this the best way to enforce? Update after existing data is formatted in the new way
     @permitted_account = current_user.account #identify a place to redirect user to
-    unless current_user.projects.include?(@current_project) || current_user.account_owner?
+    unless current_user.accessible_projects.include?(@current_project) || current_user.account_owner?
       redirect_to root_url(:subdomain => @permitted_account.subdomain), notice: 'You are not part of that project.'
     end
   end

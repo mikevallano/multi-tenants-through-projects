@@ -12,12 +12,12 @@
 
   <tbody>
     <% @projects.each do |project| %>
-      <tr><% if current_user.projects.include?(project) || current_user.account_owner? %>
+      <tr><% if current_user.accessible_projects.include?(project) || current_user.account == (project.account) || current_user.accessible_accounts.include?(project.account) %>
         <td><%= project.name %></td>
-        <td><%= link_to "Posts", project_posts_path(project) %></td>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_path(project) %></td>
-        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= project.account.subdomain %></td>
+        <td><%= link_to 'Show', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}" %></td>
+        <td><%= link_to 'Edit', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}/edit"  %></td>
+        <td><%= link_to 'Destroy', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
       <% end %>
     <% end %>

@@ -36,7 +36,6 @@ class RegistrationsController < Devise::RegistrationsController
      if !already_user?
       resource.account = Account.new(name: resource.email.split('@')[0], subdomain: resource.email.split('@')[0])
      end
-      binding.pry
     end
 
     resource.save
