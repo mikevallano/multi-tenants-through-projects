@@ -1,10 +1,60 @@
 <h1>You are now signed up!</h1>
 
+<h2>This is your main account.</h2>
 
-  <h2>This is your main account:</h2>
+<h3>You can get to your account's home page here: <%= link_to "#{current_user.account.subdomain}", subdomain_root_url %></h3>
 
-<p>Combine user.account and user.accessible_accounts. Invite a user to manage this account (member).</p>
+<p><%= link_to "Invite a New Admin Member to this Account", new_memberinvite_path %></p>
 
+<% if current_user.accessible_accounts.count > 0 %>
 
-<h2>My projects</h2>
-<p>Combine user.projects and user.accessible_projects. Invite a user to this project (participant)</p>
+  <h2>My Accounts</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Here are the accounts you can manage</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% current_user.accessible_accounts.each do |account| %>
+          <tr>
+            <td><%= account.subdomain %></td>
+            <td><%= link_to 'Show', "http://#{account.subdomain}.lvh.me:3000/" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<% end %>
+
+<% if current_user.accessible_projects.count > 0 %>
+  <h2>My Projects</h2>
+    <table>
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Account</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @projects.each do |project| %>
+        <tr><% if current_user.accessible_projects.include?(project) || current_user.account == (project.account) %>
+          <td><%= project.name %></td>
+          <td><%= project.account.subdomain %></td>
+          <td><%= link_to 'Show', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}" %></td>
+          <td><%= link_to 'Edit', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}/edit"  %></td>
+          <td><%= link_to 'Destroy', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% else %>
+
+  <p><%= link_to "Create your first project!", new_project_url %>
+<% end %>

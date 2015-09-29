@@ -8,6 +8,7 @@ class PagesController < ApplicationController
 
   def welcome
     @project = Project.new
+    @projects = Project.all
   end
 
   def my_home

@@ -27,13 +27,17 @@ class RegistrationsController < Devise::RegistrationsController
     if @token.present?
       @invite = Invite.find_by_token(@token)
       resource.email = @invite.email
-      resource.participations << Participation.new(project_id: @invite.project_ids, role_id: @invite.role_ids)
+      resource.participations << Participation.new(project_id: @invite.project_ids, role_id: @invite.role_ids,
+        associated_user_id: resource.id, associated_project_id: @invite.project_ids)
+      if !already_user?
+      resource.account = Account.new(name: resource.email.split('@')[0], subdomain: resource.email.split('@')[0])
+     end
     elsif @member_token.present?
       @member_invite = Memberinvite.find_by_member_token(@member_token)
       resource.email = @member_invite.email
       resource.memberships << Membership.new(user_id: resource.id, account_id: @member_invite.account_id,
         associated_user_id: resource.id, associated_account_id: @member_invite.account_id)
-     if !already_user?
+      if !already_user?
       resource.account = Account.new(name: resource.email.split('@')[0], subdomain: resource.email.split('@')[0])
      end
     end

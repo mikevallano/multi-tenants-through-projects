@@ -6,7 +6,7 @@ class InvitesController < ApplicationController
   # GET /invites.json
   def index
     @invites = Invite.all
-    authorize @invites
+    # authorize @invites
   end
 
   # GET /invites/1
@@ -17,7 +17,7 @@ class InvitesController < ApplicationController
   # GET /invites/new
   def new
     @invite = Invite.new
-    authorize @invite
+    # authorize @invite
   end
 
   # GET /invites/1/edit
@@ -28,7 +28,7 @@ class InvitesController < ApplicationController
   # POST /invites.json
   def create
     @invite = Invite.new(invite_params)
-    authorize @invite
+    # authorize @invite
     @invite[:token] = @invite.generate_token
      if @invite.save
         InviteMailer.new_user_invite(@invite,
@@ -68,7 +68,7 @@ class InvitesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_invite
       @invite = Invite.find(params[:id])
-      authorize @invite
+      # authorize @invite
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
