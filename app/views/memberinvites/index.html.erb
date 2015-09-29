@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Memberinvites</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Account</th>
+      <th>Sender</th>
+      <th>Receiver</th>
+      <th>Token</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @memberinvites.each do |memberinvite| %>
+      <tr>
+        <td><%= memberinvite.email %></td>
+        <td><%= memberinvite.account_id %></td>
+        <td><%= memberinvite.sender_id %></td>
+        <td><%= memberinvite.receiver_id %></td>
+        <td><%= memberinvite.token %></td>
+        <td><%= link_to 'Show', memberinvite %></td>
+        <td><%= link_to 'Edit', edit_memberinvite_path(memberinvite) %></td>
+        <td><%= link_to 'Destroy', memberinvite, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Memberinvite', new_memberinvite_path %>

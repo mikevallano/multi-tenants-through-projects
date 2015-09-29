@@ -4,7 +4,7 @@ class Membership < ActiveRecord::Base
 
   # belongs_to :project
   # belongs_to :role
-  # belongs_to :user
+  belongs_to :user
   belongs_to :associated_account, class_name: 'Account'
   belongs_to :associated_user, class_name: 'User'
 

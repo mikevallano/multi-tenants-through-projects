@@ -8,9 +8,13 @@ class RegistrationsController < Devise::RegistrationsController
     set_minimum_password_length
     yield resource if block_given?
     @token = params[:invite_token] #<-- pulls the value from the url query string
+    @member_token = params[:memberinvite_token]
     if @token.present?
       @invite = Invite.find_by_token(@token)
       resource.email = @invite.email #for use in form
+    elsif @member_token.present?
+      @member_invite = Memberinvite.find_by_member_token(@member_token)
+      resource.email = @member_invite.email
     end
     respond_with self.resource
   end
@@ -19,12 +23,17 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
     @token = params[:invite_token]
+    @member_token = params[:member_invite_token]
+    binding.pry
     if @token.present?
       @invite = Invite.find_by_token(@token)
       resource.email = @invite.email
-      resource.memberships << Membership.new(project_id: @invite.project_ids, role_id: @invite.role_ids)
-      # resource.project_ids = @invite.project_ids
-      # resource.role_ids = @invite.role_ids
+      resource.participations << Participation.new(project_id: @invite.project_ids, role_id: @invite.role_ids)
+    elsif @member_token.present?
+      @member_invite = Memberinvite.find_by_member_token(@member_token)
+      resource.email = @member_invite.email
+      resource.memberships << Membership.new(user_id: resource.id, account_id: @member_invite.account_id,
+        associated_user_id: resource.id, associated_account_id: @member_invite.account_id)
     end
 
     resource.save
@@ -122,7 +131,7 @@ class RegistrationsController < Devise::RegistrationsController
   # The path used after sign up. You need to overwrite this method
   # in your own RegistrationsController.
   def after_sign_up_path_for(resource)
-    welcome_url(:subdomain => resource.account.subdomain)
+      welcome_url(:subdomain => resource.account.subdomain)
   end
 
   # The path used after sign up for inactive accounts. You need to overwrite

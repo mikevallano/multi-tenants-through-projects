@@ -6,6 +6,8 @@
 
   <% if @token.present? %>
     <%= hidden_field_tag :invite_token, @token %>
+    <% elsif @member_token.present? %>
+    <%= hidden_field_tag :member_invite_token, @member_token %>
   <% else %>
     <%= f.fields_for :account do |a| %>
     <div class="field">

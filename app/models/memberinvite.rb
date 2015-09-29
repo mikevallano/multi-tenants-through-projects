@@ -1,7 +1,4 @@
-class Invite < ActiveRecord::Base
-
-  # default_scope { where(account_id: Account.current_id) }
-
+class Memberinvite < ActiveRecord::Base
   belongs_to :account
   belongs_to :sender, :class_name => 'User'
   belongs_to :receiver, :class_name => 'User'
@@ -11,6 +8,4 @@ class Invite < ActiveRecord::Base
   def generate_token
     SecureRandom.uuid + [Time.now.to_i, rand(100..1000)].join
   end
-
-
 end

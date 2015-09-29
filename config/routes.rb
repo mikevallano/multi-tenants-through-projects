@@ -14,7 +14,6 @@ end
 
 Rails.application.routes.draw do
 
-  resources :participations
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   constraints(SubdomainPresent) do
@@ -32,7 +31,9 @@ Rails.application.routes.draw do
 
     resources :memberships
     resources :invites
+    resources :memberinvites
     resources :roles
+    resources :participations
   end
 
   constraints(SubdomainBlank) do
