@@ -24,7 +24,6 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     @token = params[:invite_token]
     @member_token = params[:member_invite_token]
-    binding.pry
     if @token.present?
       @invite = Invite.find_by_token(@token)
       resource.email = @invite.email
@@ -34,6 +33,10 @@ class RegistrationsController < Devise::RegistrationsController
       resource.email = @member_invite.email
       resource.memberships << Membership.new(user_id: resource.id, account_id: @member_invite.account_id,
         associated_user_id: resource.id, associated_account_id: @member_invite.account_id)
+     if !already_user?
+      resource.account = Account.new(name: resource.email.split('@')[0], subdomain: resource.email.split('@')[0])
+     end
+      binding.pry
     end
 
     resource.save
@@ -165,6 +168,11 @@ class RegistrationsController < Devise::RegistrationsController
 
   def translation_scope
     'devise.registrations'
+  end
+
+  def already_user?
+    user = User.find_by_email(resource.email)
+    user.present?
   end
   private
 end
