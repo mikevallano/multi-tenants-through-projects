@@ -26,6 +26,25 @@ class MemberinvitesController < ApplicationController
   def create
     @memberinvite = Memberinvite.new(memberinvite_params)
     @memberinvite[:member_token] = @memberinvite.generate_token
+
+    #check if the user already exists
+    if User.exists?(email: memberinvite_params[:email])
+      @invitee = User.find_by_email(memberinvite_params[:email]) #find user by email
+      @invitee.memberships << Membership.new(user_id: @invitee.id, account_id: memberinvite_params[:account_id],
+        associated_user_id: @invitee.id, associated_account_id: memberinvite_params[:account_id])#create a new membership and add it to the invitee's memberships
+      @account_invite = Account.find(memberinvite_params[:account_id])
+      if @memberinvite.save
+        ExistingMemberinviteMailer.new_existing_member_invite(@memberinvite, @account_invite).deliver_now#email the invitee that he's been added as a member on that account
+        redirect_to subdomain_root_url, notice: 'Invite sent.'
+      else
+        redirect_to subdomain_root_url, notice: "Error in sending invite."
+      end
+      #handle role assignment if applicable
+      #decide if users should be able to accept/reject invites
+
+
+
+  else
      if @memberinvite.save
         MemberinviteMailer.new_member_invite(@memberinvite,
         new_user_registration_url(:memberinvite_token => @memberinvite.member_token)).deliver_now
@@ -33,6 +52,7 @@ class MemberinvitesController < ApplicationController
       else
         redirect_to subdomain_root_url, notice: "Error in sending invite."
       end
+    end
   end
 
   # PATCH/PUT /memberinvites/1
