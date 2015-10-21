@@ -57,4 +57,8 @@ class ApplicationController < ActionController::Base
     ensure
       Project.current_id = nil
   end
+
+  def after_sign_in_path_for(current_user)
+    welcome_url(:subdomain => current_user.account.subdomain)
+  end
 end
