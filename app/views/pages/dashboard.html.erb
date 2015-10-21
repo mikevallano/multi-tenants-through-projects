@@ -1,8 +1,10 @@
 <h1>This is your main homepage</h1>
+<br>
 
 <h2>Your main account is: <%= link_to "#{current_user.account.subdomain}", subdomain_root_url %>
 <p><%= link_to "Invite a New Admin Member to this Account", new_memberinvite_path %></p>
 
+<% if current_user.accessible_accounts.present? %>
 <h2>My Accounts</h2>
   <table>
     <thead>
@@ -21,7 +23,9 @@
       <% end %>
     </tbody>
   </table>
+  <% end %>
 
+<br>
 <h2>My Projects</h2>
   <table>
   <thead>
@@ -34,7 +38,8 @@
 
   <tbody>
     <% @projects.each do |project| %>
-      <tr><% if current_user.accessible_projects.include?(project) || current_user.account == (project.account) || current_user.accessible_accounts.include?(project.account) %>
+      <% if current_user.accessible_projects.include?(project) || current_user.account == (project.account) || current_user.accessible_accounts.include?(project.account) %>
+      <tr>
         <td><%= project.name %></td>
         <td><%= project.account.subdomain %></td>
         <td><%= link_to 'Show', "http://#{project.account.subdomain}.lvh.me:3000#{project_path(project)}" %></td>
@@ -45,6 +50,7 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to 'New Project', "http://#{current_user.account.subdomain}.lvh.me:3000#{new_project_path}" %>
 
 
 

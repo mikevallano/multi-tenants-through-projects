@@ -38,6 +38,9 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        #create a new participation when creating the new project
+        @participation = Participation.create(user_id: current_user.id, project_id: @project.id,
+          associated_user_id: current_user.id, associated_project_id: @project.id)
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else
@@ -82,4 +85,5 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:account_id, :name)
     end
+
 end

@@ -2,14 +2,14 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   # before_action :scoped_to_project?, only: [:show, :edit, :update, :destroy] #ensures the current user has access to the post
   before_action :can_access_project? #this is another check that the user can access the current project
-  after_action :verify_authorized #verifies each action through the corresponding pundit policy
+  # after_action :verify_authorized #verifies each action through the corresponding pundit policy
   before_action :authenticate_user! #devise check to ensure only logged in users can access
 
   # GET /posts
   # GET /posts.json
   def index
     @posts = Post.all
-    authorize @posts
+    # authorize @posts
     puts "current project is: #{@current_project.name}"
   end
 
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    authorize @post
+    # authorize @post
   end
 
   # GET /posts/1/edit
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-    authorize @post
+    # authorize @post
     respond_to do |format|
       if @post.save
         format.html { redirect_to project_posts_path, notice: 'Post was successfully created.' }
@@ -75,7 +75,7 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.friendly.find(params[:id])
-      authorize @post
+      # authorize @post
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
   extend FriendlyId
     friendly_id :name, use: [:history, :scoped], :scope => :account
 
+  scope :by_user, lambda { |user| where(:user_id => user.id) }
+
   def should_generate_new_friendly_id?
     name_changed?
   end
