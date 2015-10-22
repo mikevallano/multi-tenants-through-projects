@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   around_action :scope_current_account
   before_action :current_project
   around_action :scope_current_project
+  before_action :can_access_account?
 
   def current_account
     @account = Account.find_by(subdomain: request.subdomain)
@@ -36,7 +37,16 @@ class ApplicationController < ActionController::Base
     @permitted_account = current_user.account #identify a place to redirect user to
     unless current_user.accessible_projects.include?(@current_project) || current_user.account_owner? ||
       current_user.accessible_accounts.include?(@current_project.account)
-      redirect_to root_url(:subdomain => @permitted_account.subdomain), notice: 'You are not part of that project.'
+      redirect_to subdomain_root_url(:subdomain => @permitted_account.subdomain), notice: 'You are not part of that project.'
+    end
+  end
+
+  def can_access_account? #TODO: is this the best way to enforce? Update after existing data is formatted in the new way
+    if current_user.present?
+      @permitted_account = current_user.account #identify a place to redirect user to
+      unless current_user.accessible_accounts.include?(current_account) || current_user.account == current_account
+        redirect_to subdomain_root_url(:subdomain => @permitted_account.subdomain), notice: 'You are not part of that account.'
+      end
     end
   end
 
