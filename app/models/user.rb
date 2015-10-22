@@ -45,17 +45,17 @@ class User < ActiveRecord::Base
   end
 
   def all_accounts
-    mah_accounts = []
-    mah_accounts << self.account
-    self.accessible_accounts.each do |account|
-      mah_accounts << account
-    end
-    mah_accounts
+    # mah_accounts = []
+    # mah_accounts << self.account
+    # self.accessible_accounts.each do |account|
+    #   mah_accounts << account
+    # end
+    # mah_accounts
+    # self.accessible_accounts << self.account
+
+    #this needs to merge two active record queries.
   end
 
-  def all_projects
-    self.projects.merge(self.accessible_projects)
-  end
 
   private
 
