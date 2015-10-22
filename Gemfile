@@ -23,6 +23,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem 'letter_opener'
+  gem 'faker'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
@@ -31,6 +32,7 @@ group :development, :test do
   gem 'spring'
 
   gem 'rspec-rails', '~> 3.0'
+  gem 'shoulda-matchers'
   gem "capybara"
   gem 'factory_girl_rails'
 end
