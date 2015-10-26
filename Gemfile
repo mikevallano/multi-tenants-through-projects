@@ -37,3 +37,4 @@ group :development, :test do
   gem 'factory_girl_rails'
 end
 
+gem "rails-erd", group: :development
